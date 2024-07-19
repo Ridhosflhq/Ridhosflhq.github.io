@@ -1,5 +1,5 @@
 ---
-layot: page
+layot: default
 title: "Blog"
 ---
 
