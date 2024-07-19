@@ -1,5 +1,5 @@
 ---
-layot: default
+layout: default
 title: "Blog"
 ---
 
