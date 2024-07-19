@@ -1,6 +1,6 @@
 title: "Ridho Saifulhaq"
 author: "Ridho"
-description: "Made with <b style=\"color: #f45;\"Github"
+#description: "Made with <b style=\"color: #f45;\"Github"
 permalink: /:title/
 lang: "en"
 excerpt_separator: "\n\n\n"
