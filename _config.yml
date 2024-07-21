@@ -1,6 +1,6 @@
 title: "Ridho Saifulhaq"
 author: "Ridho"
-#description: "Made with <b style=\"color: #f45;\"Github"
+description: "-"#"Made with <b style=\"color: #f45;\"Github"
 permalink: /:title/
 lang: "en"
 excerpt_separator: "\n\n\n"
@@ -19,6 +19,7 @@ minimal: true             # use a dark header
 navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "CV_Ridho.pdf", title: "CV"}
   - {file: "blog.md", title: "Blog"}
+  - {title: "Portofolio"}
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
   - {title: Mail, icon: envelope, url: "mailto:saifulhaqridho28@gmail.com"}
