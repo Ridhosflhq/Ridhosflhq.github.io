@@ -11,4 +11,4 @@ My interests lie in spatial research areas like urban studies, disaster manageme
 
 Thank you!
 
-You can get to know me better by downloading my resume[ hehe.](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/master/Resume.pdf)
+You can get to know me better by downloading my resume[ here.](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/master/Resume.pdf)
