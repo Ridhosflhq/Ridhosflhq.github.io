@@ -7,6 +7,7 @@ title: Portofolio
     <div class="title" style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">
         Portofolio
     </div>
+    <img src="/_portofolio/3dmerap.jpg">
     <img src="_portofolio/3dmerap.jpg" alt="Gambar Merapi" style="max-width: 100%; height: auto;">
     <p class="caption" style="font-size: 14px; color: #555;">
         Disusun menggunakan overlay citra dengan data ketinggian (digital elevation model) menggunakan aplikasi ArcMap (ArcGIS Desktop).
