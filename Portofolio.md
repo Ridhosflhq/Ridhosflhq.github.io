@@ -1,10 +1,14 @@
 ---
 layout: default
-title: "Blog"
+title: "Portofolio"
 ---
 
-{% if site.show_excerpts %}
-  {% include home.html %}
-{% else %}
-  {% include archive.html title="Posts" %}
-{% endif %}
+<div class="image-container" style="text-align: center; margin: 20px;">
+    <div class="title" style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">
+        3D Gunung Merapi dan Sekitarnya
+    </div>
+    <img src="{{ '/_File Porto/3dmerap.jpg' | relative_url }}" alt="Kenampakan 3D Gunung Merapi dan Sekitarnya" style="max-width: 100%; height: auto;">
+    <p class="caption" style="font-size: 14px; color: #555;">
+        Visualisasi Gunung Merapi yang dihasilkan dengan overlay citra dengan visualisasi digital elevasi model.
+    </p>
+</div>
