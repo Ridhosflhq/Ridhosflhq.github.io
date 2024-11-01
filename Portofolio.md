@@ -14,3 +14,4 @@ title: Portofolio
 </div>
 
 ![63327](https://github.com/user-attachments/assets/ca1c97f6-f9a0-4cf7-8473-46dcb2abf9ac)
+Ini adalah gambar Merapi yang saya ambil.
