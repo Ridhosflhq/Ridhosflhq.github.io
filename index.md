@@ -3,10 +3,10 @@ layout: page
 title: ""
 ---
 
-Halo, Ridho Saifulhaq disini
+Hello, I'm Ridho Saifulhaq.
 
-Saya merupakan peminat geospasial. Saya merupakan lulusan program studi Kartografi dan Penginderaa Jauh, Fakultas Geografi, Universitas Gadjah Mada Yogyakarta.
+I have a passion for geospatial topics and graduated from the Cartography and Remote Sensing program at the Faculty of Geography, Universitas Gadjah Mada in Yogyakarta.
 
-Saya memiliki ketertarikan kajian kajian spasial seperti kajian urban-kota, kebencanaan, vegetasi, sosial budaya, dan lingkungan hidup.
+My interests lie in spatial research areas like urban studies, disaster management, vegetation, socio-cultural aspects, and environmental issues.
 
-Terima Kasih
+Thank you!
