@@ -9,6 +9,6 @@ title: Portofolio
     </div>
     <img src="/_portofolio/3dmerap.jpg" alt="Gambar Merapi" style="max-width: 100%; height: auto;">
     <p class="caption" style="font-size: 14px; color: #555;">
-        Ini adalah gambar Merapi yang saya ambil.
+        Disusun menggunakan overlay citra dengan data ketinggian (digital elevation model) menggunakan aplikasi ArcMap (ArcGIS Desktop).
     </p>
 </div>
