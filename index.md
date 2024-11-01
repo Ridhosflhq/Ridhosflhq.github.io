@@ -11,4 +11,4 @@ My interests lie in spatial research areas like urban studies, disaster manageme
 
 Thank you!
 
-[Download Resume](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/resume.pdf)
+[Download Resume](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/Resume.pdf)
