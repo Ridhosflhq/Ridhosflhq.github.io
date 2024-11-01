@@ -9,6 +9,6 @@ I have a passion for geospatial topics and graduated from the Cartography and Re
 
 My interests lie in spatial research areas like urban studies, disaster management, vegetation, socio-cultural aspects, and environmental issues.
 
-Thank you!
-
 You can get to know me better by downloading my resume [here.](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/master/Resume.pdf)
+
+Thank you!
