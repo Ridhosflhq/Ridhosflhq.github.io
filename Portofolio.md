@@ -23,3 +23,15 @@ The 1936 Topographic Map, originally a 1963 US AMS map for the Muntilan area, ha
 <img src="https://github.com/user-attachments/assets/67216fac-d3be-4352-a6d6-32847fcc4c9c" alt="Peta Topografi 1963" style="width: 75%; display: block; margin: 0 auto;">
 
 The infographic showcases a choropleth map illustrating the distribution of winning political parties across Indonesia's electoral districts. It includes the total vote counts (in millions) and the number of legislative representatives in parliament, represented by dots for each member. The information is derived from official data provided by KPU Indonesia and Kompas. This infographic was produced using QGIS and Inkscape software.
+
+### Karst Flood Inundation Model
+
+<img src="https://github.com/user-attachments/assets/24b72518-7ab5-4b59-8752-34a64b190394" alt="Peta Topografi 1963" style="width: 75%; display: block; margin: 0 auto;">
+
+The compilation was done using modeling results derived from Lidar point cloud data. This data was then analyzed and used to model the rise and spread of floodwaters in a specific area. The animation provides a visual representation of the floodwater levels based on the processed Lidar data simulation results.
+
+### The distribution map of new middle school students in Kutoarjo, Indonesia.
+
+<img src="https://github.com/user-attachments/assets/af7d28eb-152a-4fe3-b82e-6f9ae72d4203" alt="Peta Topografi 1963" style="width: 75%; display: block; margin: 0 auto;">
+
+The map was prepared to take part in the 2022 GISCI Map Competiton map competition. The map shows the distribution of houses for students accepted into the State Middle School PPDB program in Purworejo Regency in 2021 at 4 State Middle Schools in Kutoarjo. Data taken from the Purworejo Regency PPDB Website. Data is presented in several forms of presentation, making it easier to read the data.
