@@ -12,6 +12,12 @@ The portfolio includes various outcomes from spatial data processing projects un
 
 For those interested, the PDF version can be downloaded [here.](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/master/Porto.pdf)
 
+### Interactive 3d Population Map
+
+![Interactive 3d Population Map](https://github.com/user-attachments/assets/b1bf409a-546f-42a7-996c-ad3dd6d39870)
+
+The interactive population map was created using deck.gl through R-Studio. The data used is the 2023 population contour data, which is publicly accessible.
+
 ### 1936 Topographic Map
 
 <img src="https://github.com/user-attachments/assets/9c8ed58b-141a-4c53-80c6-173d52bdde1c" alt="Peta Topografi 1963" style="width: 75%; display: block; margin: 0 auto;">
