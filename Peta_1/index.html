@@ -52,16 +52,17 @@
 
         // Fungsi untuk menentukan warna berdasarkan jarak
         function getColor(distance) {
-            return distance <= 200 ? "#00FF00" : // Hijau (≤ 200m)
-                   distance <= 500 ? "#FFFF00" : // Kuning (200m - 500m)
-                                    "#FF0000";   // Merah (> 500m)
+            return distance < 200 ? "#00FF00" :   // Hijau  (< 200m)
+                   distance < 250 ? "#FFFF00" :   // Kuning (200m - 250m)
+                   distance < 500 ? "#FFA500" :   // Oranye (250m - 500m)
+                                   "#FF0000";     // Merah  (> 500m)
         }
 
         var geojsonLayer;
 
         // Fungsi untuk memuat GeoJSON dan mengubah warna sesuai titik pusat
         function loadGeoJSON() {
-            fetch('export.geojson')
+            fetch('export(1).geojson')
                 .then(response => response.json())
                 .then(data => {
                     if (geojsonLayer) map.removeLayer(geojsonLayer); // Hapus layer lama jika ada
