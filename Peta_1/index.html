@@ -27,11 +27,11 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Memuat file GeoJSON
-        fetch('export.geojson') // Pastikan file GeoJSON diupload di GitHub
+        // Memuat file GeoJSON dari folder Peta_1
+        fetch('Peta_1/export.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
             .then(response => response.json())
             .then(data => {
-                L.geoJSON(data).addTo(map); // Menambahkan data ke peta
+                L.geoJSON(data).addTo(map); // Menambahkan data GeoJSON ke peta
             })
             .catch(error => {
                 console.error("Error loading GeoJSON:", error);
