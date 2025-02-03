@@ -27,15 +27,37 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Memuat file GeoJSON dari folder Peta_1
-        fetch('export.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
-            .then(response => response.json())
+        // Path ke file GeoJSON
+        var geojsonPath = 'export.geojson'; // Jika index.html dan export.geojson ada di folder yang sama
+
+        // Memuat file GeoJSON
+        fetch(geojsonPath)
+            .then(response => {
+                console.log("Response Status:", response.status); // Debugging
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
             .then(data => {
-                L.geoJSON(data).addTo(map); // Menambahkan data GeoJSON ke peta
+                console.log("GeoJSON Data Loaded:", data); // Debugging
+
+                // Tambahkan GeoJSON ke peta dengan popup sederhana
+                L.geoJSON(data, {
+                    onEachFeature: function (feature, layer) {
+                        // Ambil nama bangunan atau ID jika tersedia
+                        var popupContent = "Bangunan";
+                        if (feature.properties) {
+                            popupContent = feature.properties.name || feature.properties.id || "Bangunan";
+                        }
+                        layer.bindPopup(popupContent);
+                    }
+                }).addTo(map);
             })
             .catch(error => {
                 console.error("Error loading GeoJSON:", error);
             });
+
     </script>
 </body>
 </html>
