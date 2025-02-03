@@ -35,11 +35,6 @@
                     style: function (feature) {
                         // Mengubah warna bangunan menjadi merah bata
                         return { color: "#b22222", weight: 2, opacity: 0.7 };
-                    },
-                    onEachFeature: function (feature, layer) {
-                        // Pop-up seadanya hanya menampilkan nama bangunan
-                        var popupContent = feature.properties.name || "Bangunan tanpa nama";
-                        layer.bindPopup(popupContent); // Menampilkan nama bangunan atau teks seadanya
                     }
                 }).addTo(map); // Menambahkan data GeoJSON ke peta
             })
