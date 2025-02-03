@@ -4,20 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web GIS - Bangunan di Kutoarjo</title>
-    
-    <!-- Link untuk Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    
-    <!-- Link untuk plugin Leaflet Marker Cluster -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    
-    <!-- Link untuk plugin Leaflet Draw -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.draw/dist/leaflet.draw.css" />
-    
-    <!-- Link untuk plugin Leaflet EasyButton -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.4.0/dist/easy-button.css" />
-    
     <style>
         /* Set peta untuk mengisi seluruh halaman */
         #map {
@@ -29,82 +16,37 @@
 <body>
     <div id="map"></div>
 
-    <!-- Script untuk Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <!-- Script untuk plugin Leaflet Marker Cluster -->
-    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-    
-    <!-- Script untuk plugin Leaflet Draw -->
-    <script src="https://unpkg.com/leaflet.draw/dist/leaflet.draw.js"></script>
-    
-    <!-- Script untuk plugin Leaflet EasyButton -->
-    <script src="https://unpkg.com/leaflet-easybutton@2.4.0/dist/easy-button.js"></script>
-    
     <script>
         // Inisialisasi peta
-        var map = L.map('map', {
-            zoomControl: true // Menampilkan kontrol zoom
-        }).setView([-7.7261064987525225, 109.90718982884927], 15);
+        var map = L.map('map').setView([-7.7261064987525225, 109.90718982884927], 15);
 
         // Tambahkan tile layer (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Menambahkan kontrol skala
-        L.control.scale().addTo(map);
-
-        // Tombol reset peta
-        var resetButton = L.easyButton('<span class="fa fa-home"></span>', function(){
-            map.setView([-7.7261064987525225, 109.90718982884927], 15);
-        }).addTo(map);
-
-        // Menambahkan kontrol pencarian lokasi
-        L.Control.Geocoder.nominatim().addTo(map);
-
-        // Menggunakan Marker Cluster
-        var markers = L.markerClusterGroup();
-
-        // Memuat file GeoJSON
-        fetch('Peta_1/export.geojson')  // Mengganti dengan alamat GeoJSON yang benar
+        // Memuat file GeoJSON dari folder Peta_1
+        fetch('Peta_1/export.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
             .then(response => response.json())
             .then(data => {
-                // Menambahkan data ke dalam Marker Cluster
                 L.geoJSON(data, {
+                    style: function (feature) {
+                        // Mengubah warna bangunan menjadi merah bata
+                        return { color: "#b22222", weight: 2, opacity: 0.7 };
+                    },
                     onEachFeature: function (feature, layer) {
-                        // Menambahkan Popup dan Tooltip
+                        // Menambahkan popup dengan informasi nama dan deskripsi
                         if (feature.properties && feature.properties.name) {
                             layer.bindPopup("<b>" + feature.properties.name + "</b><br>" + feature.properties.description);
-                            layer.bindTooltip(feature.properties.name).openTooltip();
                         }
                     }
-                }).addTo(markers); // Menambahkan marker ke cluster
-                map.addLayer(markers); // Menambahkan cluster ke peta
+                }).addTo(map); // Menambahkan data GeoJSON ke peta
             })
             .catch(error => {
                 console.error("Error loading GeoJSON:", error);
             });
-
-        // Menambahkan alat gambar (drawing) untuk menggambar objek pada peta
-        var drawnItems = new L.FeatureGroup();
-        map.addLayer(drawnItems);
-
-        var drawControl = new L.Control.Draw({
-            edit: { featureGroup: drawnItems },
-            draw: {
-                polygon: true,
-                marker: true,
-                polyline: true
-            }
-        });
-        map.addControl(drawControl);
-
-        // Menangani event setelah gambar selesai digambar
-        map.on('draw:created', function (e) {
-            var layer = e.layer;
-            drawnItems.addLayer(layer);
-        });
     </script>
 </body>
 </html>
