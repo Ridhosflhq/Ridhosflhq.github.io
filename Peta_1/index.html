@@ -40,6 +40,8 @@
                         // Menambahkan popup dengan informasi nama dan deskripsi
                         if (feature.properties && feature.properties.name) {
                             layer.bindPopup("<b>" + feature.properties.name + "</b><br>" + feature.properties.description);
+                        } else {
+                            layer.bindPopup("Informasi tidak tersedia.");
                         }
                     }
                 }).addTo(map); // Menambahkan data GeoJSON ke peta
