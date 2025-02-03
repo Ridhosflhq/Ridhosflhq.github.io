@@ -6,7 +6,6 @@
     <title>Web GIS - Bangunan di Kutoarjo</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        /* Set peta untuk mengisi seluruh halaman */
         #map {
             height: 100vh;
             width: 100%;
@@ -19,25 +18,11 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        // Koordinat Stasiun Kutoarjo (titik pusat)
-        var stationCoords = L.latLng(-7.7261064987525225, 109.90718982884927);
-
         // Inisialisasi peta
-        var map = L.map('map').setView(stationCoords, 15);
+        var map = L.map('map').setView([-7.7261064987525225, 109.90718982884927], 15);
 
         // Definisi berbagai basemap
         var basemaps = {
-            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }),
-            "Google Satellite": L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                attribution: '&copy; Google'
-            }),
-            "Google Terrain": L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
-                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-                attribution: '&copy; Google'
-            }),
             "CartoDB Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; CartoDB'
             })
@@ -49,56 +34,67 @@
         // Layer control untuk memilih basemap
         L.control.layers(basemaps).addTo(map);
 
-        // Fungsi untuk menentukan warna berdasarkan jarak dari stasiun
+        // Titik pusat default (Stasiun Kutoarjo)
+        var centerMarker = L.marker([-7.7261064987525225, 109.90718982884927], { draggable: true }).addTo(map);
+        centerMarker.bindPopup("Titik Pusat (Geser atau Klik di Peta)").openPopup();
+        var centerCoords = centerMarker.getLatLng();
+
+        // Fungsi untuk menentukan warna berdasarkan jarak
         function getColor(distance) {
-            return distance <= 200 ? "#00FF00" :  // Hijau (≤ 200m)
-                   distance <= 500 ? "#FFFF00" :  // Kuning (200m - 500m)
+            return distance <= 200 ? "#00FF00" : // Hijau (≤ 200m)
+                   distance <= 500 ? "#FFFF00" : // Kuning (200m - 500m)
                                     "#FF0000";   // Merah (> 500m)
         }
 
-        // Path ke file GeoJSON
-        var geojsonPath = 'export.geojson'; // Jika index.html dan export.geojson ada di folder yang sama
+        var geojsonLayer;
 
-        // Memuat file GeoJSON
-        fetch(geojsonPath)
-            .then(response => {
-                console.log("Response Status:", response.status); // Debugging
-                if (!response.ok) {
-                    throw new Error("HTTP status " + response.status);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("GeoJSON Data Loaded:", data); // Debugging
+        // Fungsi untuk memuat GeoJSON dan mengubah warna sesuai titik pusat
+        function loadGeoJSON() {
+            fetch('export.geojson')
+                .then(response => response.json())
+                .then(data => {
+                    if (geojsonLayer) map.removeLayer(geojsonLayer); // Hapus layer lama jika ada
 
-                // Tambahkan GeoJSON ke peta dengan warna berdasarkan jarak
-                L.geoJSON(data, {
-                    style: function (feature) {
-                        // Hitung jarak bangunan dari stasiun
-                        var coords = feature.geometry.coordinates[0][0]; // Ambil titik pertama poligon
-                        var buildingCoords = L.latLng(coords[1], coords[0]); // Konversi ke format Leaflet
-                        var distance = map.distance(buildingCoords, stationCoords); // Jarak dalam meter
+                    geojsonLayer = L.geoJSON(data, {
+                        style: function (feature) {
+                            var coords = feature.geometry.coordinates[0][0]; // Titik pertama poligon
+                            var buildingCoords = L.latLng(coords[1], coords[0]); // Konversi ke format Leaflet
+                            var distance = map.distance(buildingCoords, centerCoords); // Jarak dalam meter
 
-                        return {
-                            fillColor: getColor(distance),
-                            color: "#000000",  // Outline hitam
-                            weight: 1,
-                            fillOpacity: 0.6
-                        };
-                    },
-                    onEachFeature: function (feature, layer) {
-                        // Tambahkan popup sederhana
-                        var popupContent = "Bangunan";
-                        if (feature.properties) {
-                            popupContent = feature.properties.name || feature.properties.id || "Bangunan";
+                            return {
+                                fillColor: getColor(distance),
+                                color: "#000000",  // Outline hitam
+                                weight: 1,
+                                fillOpacity: 0.6
+                            };
+                        },
+                        onEachFeature: function (feature, layer) {
+                            var coords = feature.geometry.coordinates[0][0];
+                            var buildingCoords = L.latLng(coords[1], coords[0]);
+                            var distance = Math.round(map.distance(buildingCoords, centerCoords));
+
+                            layer.bindPopup("Bangunan<br>Jarak: " + distance + " m");
                         }
-                        layer.bindPopup(popupContent + "<br>Jarak: " + Math.round(map.distance(layer.getBounds().getCenter(), stationCoords)) + " m");
-                    }
-                }).addTo(map);
-            })
-            .catch(error => {
-                console.error("Error loading GeoJSON:", error);
-            });
+                    }).addTo(map);
+                })
+                .catch(error => console.error("Error loading GeoJSON:", error));
+        }
+
+        // Load GeoJSON pertama kali
+        loadGeoJSON();
+
+        // Event saat marker digeser
+        centerMarker.on('dragend', function () {
+            centerCoords = centerMarker.getLatLng();
+            loadGeoJSON(); // Perbarui warna bangunan berdasarkan titik pusat baru
+        });
+
+        // Event saat peta diklik (memindahkan titik pusat)
+        map.on('click', function (e) {
+            centerCoords = e.latlng;
+            centerMarker.setLatLng(e.latlng);
+            loadGeoJSON();
+        });
 
     </script>
 </body>
