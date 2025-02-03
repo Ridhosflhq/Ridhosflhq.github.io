@@ -12,6 +12,12 @@ The portfolio includes various outcomes from spatial data processing projects un
 
 For those interested, the PDF version can be downloaded [here.](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/master/Porto.pdf)
 
+### Interactive Web Map
+
+<img src="https://github.com/user-attachments/assets/2972d23c-f321-4374-8f5c-e778d1806b63" alt="Interactive Web Map" style="width: 75%; display: block; margin: 0 auto;">
+
+This project uses HTML, JavaScript, and the Leaflet library to create an interactive web map. GeoJSON is used to store building data, which is dynamically loaded and visualized. Users can adjust the map center and see buildings color-coded based on distance, with base maps provided by OpenStreetMap, Google, and CartoDB.
+
 ### Interactive 3d Population Map
 
 <img src="https://github.com/user-attachments/assets/b1bf409a-546f-42a7-996c-ad3dd6d39870" alt="Interactive 3d Population Map" style="width: 75%; display: block; margin: 0 auto;">
