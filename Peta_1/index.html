@@ -28,20 +28,10 @@
         }).addTo(map);
 
         // Memuat file GeoJSON dari folder Peta_1
-        fetch('Peta_1/export.geojson')
+        fetch('Peta_1/wxport.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
             .then(response => response.json())
             .then(data => {
-                L.geoJSON(data, {
-                    style: function (feature) {
-                        return {
-                            fillColor: '#A0522D', // Warna merah bata
-                            color: '#A0522D', // Warna garis merah bata
-                            weight: 1, // Ketebalan garis
-                            opacity: 1, // Opacity garis
-                            fillOpacity: 0.8 // Opacity warna bangunan
-                        };
-                    }
-                }).addTo(map);
+                L.geoJSON(data).addTo(map); // Menambahkan data GeoJSON ke peta
             })
             .catch(error => {
                 console.error("Error loading GeoJSON:", error);
