@@ -67,7 +67,7 @@
         var markers = L.markerClusterGroup();
 
         // Memuat file GeoJSON
-        fetch('Peta_1/export.geojson')  // Pastikan file GeoJSON ada di folder Peta_1
+        fetch('Peta_1/export.geojson')  // Mengganti dengan alamat GeoJSON yang benar
             .then(response => response.json())
             .then(data => {
                 // Menambahkan data ke dalam Marker Cluster
