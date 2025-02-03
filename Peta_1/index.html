@@ -19,8 +19,11 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
+        // Koordinat Stasiun Kutoarjo (titik pusat)
+        var stationCoords = L.latLng(-7.7261064987525225, 109.90718982884927);
+
         // Inisialisasi peta
-        var map = L.map('map').setView([-7.7261064987525225, 109.90718982884927], 15);
+        var map = L.map('map').setView(stationCoords, 15);
 
         // Definisi berbagai basemap
         var basemaps = {
@@ -46,6 +49,13 @@
         // Layer control untuk memilih basemap
         L.control.layers(basemaps).addTo(map);
 
+        // Fungsi untuk menentukan warna berdasarkan jarak dari stasiun
+        function getColor(distance) {
+            return distance <= 200 ? "#00FF00" :  // Hijau (≤ 200m)
+                   distance <= 500 ? "#FFFF00" :  // Kuning (200m - 500m)
+                                    "#FF0000";   // Merah (> 500m)
+        }
+
         // Path ke file GeoJSON
         var geojsonPath = 'export.geojson'; // Jika index.html dan export.geojson ada di folder yang sama
 
@@ -61,15 +71,28 @@
             .then(data => {
                 console.log("GeoJSON Data Loaded:", data); // Debugging
 
-                // Tambahkan GeoJSON ke peta dengan popup sederhana
+                // Tambahkan GeoJSON ke peta dengan warna berdasarkan jarak
                 L.geoJSON(data, {
+                    style: function (feature) {
+                        // Hitung jarak bangunan dari stasiun
+                        var coords = feature.geometry.coordinates[0][0]; // Ambil titik pertama poligon
+                        var buildingCoords = L.latLng(coords[1], coords[0]); // Konversi ke format Leaflet
+                        var distance = map.distance(buildingCoords, stationCoords); // Jarak dalam meter
+
+                        return {
+                            fillColor: getColor(distance),
+                            color: "#000000",  // Outline hitam
+                            weight: 1,
+                            fillOpacity: 0.6
+                        };
+                    },
                     onEachFeature: function (feature, layer) {
-                        // Ambil nama bangunan atau ID jika tersedia
+                        // Tambahkan popup sederhana
                         var popupContent = "Bangunan";
                         if (feature.properties) {
                             popupContent = feature.properties.name || feature.properties.id || "Bangunan";
                         }
-                        layer.bindPopup(popupContent);
+                        layer.bindPopup(popupContent + "<br>Jarak: " + Math.round(map.distance(layer.getBounds().getCenter(), stationCoords)) + " m");
                     }
                 }).addTo(map);
             })
