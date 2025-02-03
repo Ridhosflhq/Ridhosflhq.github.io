@@ -22,10 +22,29 @@
         // Inisialisasi peta
         var map = L.map('map').setView([-7.7261064987525225, 109.90718982884927], 15);
 
-        // Tambahkan tile layer (OpenStreetMap)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        // Definisi berbagai basemap
+        var basemaps = {
+            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }),
+            "Google Satellite": L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '&copy; Google'
+            }),
+            "Google Terrain": L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '&copy; Google'
+            }),
+            "CartoDB Dark": L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; CartoDB'
+            })
+        };
+
+        // Tambahkan basemap default ke peta
+        basemaps["OpenStreetMap"].addTo(map);
+
+        // Layer control untuk memilih basemap
+        L.control.layers(basemaps).addTo(map);
 
         // Path ke file GeoJSON
         var geojsonPath = 'export.geojson'; // Jika index.html dan export.geojson ada di folder yang sama
