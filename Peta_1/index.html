@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web GIS - Bangunan di Kutoarjo</title>
+    <title>Web GIS - Bangunan</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         /* Set peta untuk mengisi seluruh halaman */
@@ -20,7 +20,7 @@
 
     <script>
         // Inisialisasi peta
-        var map = L.map('map').setView([-7.7261064987525225, 109.90718982884927], 15);
+        var map = L.map('map').setView([0, 0], 2);  // Ganti dengan koordinat pusat yang sesuai
 
         // Tambahkan tile layer (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,7 +28,7 @@
         }).addTo(map);
 
         // Memuat file GeoJSON dari folder Peta_1
-        fetch('Peta_1/wxport.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
+        fetch('Peta_1/export.geojson')  // Menggunakan path relatif yang benar
             .then(response => response.json())
             .then(data => {
                 L.geoJSON(data).addTo(map); // Menambahkan data GeoJSON ke peta
