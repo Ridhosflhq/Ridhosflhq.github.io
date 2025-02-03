@@ -28,7 +28,7 @@
         }).addTo(map);
 
         // Memuat file GeoJSON dari folder Peta_1
-        fetch('Peta_1/export.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
+        fetch('export.geojson')  // Update path dengan folder dan nama file GeoJSON yang benar
             .then(response => response.json())
             .then(data => {
                 L.geoJSON(data).addTo(map); // Menambahkan data GeoJSON ke peta
