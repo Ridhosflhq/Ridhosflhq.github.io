@@ -24,6 +24,12 @@ This project uses HTML, JavaScript, and the Leaflet library to create an interac
 
 The interactive population map was created using deck.gl through R-Studio. The data used is the 2023 population contour data, which is publicly accessible.
 
+### Biomass - Vegetation Indices using Python
+
+<img src="https://github.com/user-attachments/assets/26bbc689-c241-454d-a444-ff848bf51fd9" alt="Interactive 3d Population Map" style="width: 75%; display: block; margin: 0 auto;">
+
+The NDVI analysis was conducted using Google Earth Engine (GEE) and Python, processing Sentinel-2 imagery while addressing authentication and deprecation issues. The results were exported in formats such as GeoJSON or raster for further visualization and interpretation.
+
 ### 1936 Topographic Map
 
 <img src="https://github.com/user-attachments/assets/9c8ed58b-141a-4c53-80c6-173d52bdde1c" alt="Peta Topografi 1963" style="width: 75%; display: block; margin: 0 auto;">
