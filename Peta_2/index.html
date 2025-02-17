@@ -1,46 +1,70 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pencarian Rute Tercepat</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map { height: 600px; }
+    </style>
+</head>
+<body>
+    <h1>Pencarian Rute Tercepat</h1>
+    <div id="map"></div>
+    <script>
+        var map = L.map('map').setView([-6.2, 106.8], 10);
 
-<div id="map" style="height: 600px;"></div>
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-var map = L.map('map').setView([-6.2, 106.8], 10); // Koordinat Jakarta
+        var originMarker, destinationMarker, polyline;
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-}).addTo(map);
+        function updateRoute(originLat, originLng, destinationLat, destinationLng) {
+            fetch('/route', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    origin: [originLat, originLng],
+                    destination: [destinationLat, destinationLng]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.route) {
+                    if (polyline) {
+                        map.removeLayer(polyline);
+                    }
 
-var originMarker = L.marker([-6.21462, 106.84513]).addTo(map); // Monas
-var destinationMarker = L.marker([-6.22972, 106.82940]).addTo(map); // Kota Tua
+                    var linestring = H.geo.LineString.fromFlexiblePolyline(data.route.shape);
+                    polyline = L.polyline(linestring.getLatLngs(), { color: 'blue' }).addTo(map);
+                    map.fitBounds(polyline.getBounds());
+                } else {
+                    alert(data.error || 'Gagal mendapatkan rute.');
+                }
+            });
+        }
 
-originMarker.dragging.enable();
-destinationMarker.dragging.enable();
-
-originMarker.on('dragend', function(event) {
-    var newLatLng = event.target.getLatLng();
-    // Panggil fungsi untuk memperbarui rute
-    updateRoute(newLatLng.lat, newLatLng.lng, destinationMarker.getLatLng().lat, destinationMarker.getLatLng().lng);
-});
-
-destinationMarker.on('dragend', function(event) {
-    var newLatLng = event.target.getLatLng();
-    // Panggil fungsi untuk memperbarui rute
-    updateRoute(originMarker.getLatLng().lat, originMarker.getLatLng().lng, newLatLng.lat, newLatLng.lng);
-});
-
-function updateRoute(originLat, originLng, destinationLat, destinationLng) {
-    // Gunakan AJAX untuk mengirim permintaan ke HERE Routing API
-    // ...
-}
-
-// ... (di dalam fungsi updateRoute)
-
-// Contoh data rute dari HERE Routing API
-var routeData = {
-    // ...
-};
-
-// Decode polyline rute
-var linestring = H.geo.LineString.fromFlexiblePolyline(routeData.response.route[0].shape);
-
-// Tampilkan rute di peta
-var polyline = L.polyline(linestring.getLatLngs(), { color: 'blue' }).addTo(map);
+        map.on('click', function(e) {
+            if (!originMarker) {
+                originMarker = L.marker(e.latlng).addTo(map).dragging.enable();
+                originMarker.on('dragend', function() {
+                    updateRoute(originMarker.getLatLng().lat, originMarker.getLatLng().lng,
+                        destinationMarker ? destinationMarker.getLatLng().lat : null,
+                        destinationMarker ? destinationMarker.getLatLng().lng : null);
+                });
+            } else if (!destinationMarker) {
+                destinationMarker = L.marker(e.latlng).addTo(map).dragging.enable();
+                destinationMarker.on('dragend', function() {
+                    updateRoute(originMarker.getLatLng().lat, originMarker.getLatLng().lng,
+                        destinationMarker.getLatLng().lat, destinationMarker.getLatLng().lng);
+                });
+                updateRoute(originMarker.getLatLng().lat, originMarker.getLatLng().lng,
+                    destinationMarker.getLatLng().lat, destinationMarker.getLatLng().lng);
+            }
+        });
+    </script>
+</body>
+</html>
