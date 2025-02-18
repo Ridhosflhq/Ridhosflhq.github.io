@@ -26,9 +26,15 @@ The interactive population map was created using deck.gl through R-Studio. The d
 
 ### Biomass - Vegetation Indices using Python
 
-<img src="https://github.com/user-attachments/assets/26bbc689-c241-454d-a444-ff848bf51fd9" alt="Interactive 3d Population Map" style="width: 75%; display: block; margin: 0 auto;">
+<img src="https://github.com/user-attachments/assets/26bbc689-c241-454d-a444-ff848bf51fd9" alt="Vegetation Indices" style="width: 75%; display: block; margin: 0 auto;">
 
 The NDVI analysis was conducted using Google Earth Engine (GEE) and Python, processing Sentinel-2 imagery while addressing authentication and deprecation issues. The results were exported in formats such as GeoJSON or raster for further visualization and interpretation.
+
+### Detail Spatial Plan Map ( RDTR-Rencana Detail Tata Ruang)
+
+<img src="https://github.com/user-attachments/assets/8b0cded4-040e-4646-b505-9793b8f9bed6" alt="Detail Spatial Plan Map" style="width: 75%; display: block; margin: 0 auto;">
+
+The RDTR (Detail Spatial Plan Map) is prepared through spatial analysis based on RDTR preparation guidelines and collaboration with various parties such as the government and community representatives.
 
 ### 1936 Topographic Map
 
