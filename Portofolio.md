@@ -24,6 +24,12 @@ This project uses HTML, JavaScript, and the Leaflet library to create an interac
 
 The interactive population map was created using deck.gl through R-Studio. The data used is the 2023 population contour data, which is publicly accessible.
 
+### Interactive Web GIS for Route Navigation
+
+<img src="https://github.com/user-attachments/assets/d5644ae2-e76d-4fff-b83e-82d79c089d30" alt="Rute" style="width: 75%; display: block; margin: 0 auto;">
+
+The navigation map system was developed using HTML, CSS, and JavaScript with Leaflet.js, enabling users to create and visualize optimal routes. The system includes interactive route mapping, allowing users to add multiple waypoints, draggable markers for adjusting locations dynamically, and a fixed-size direction legend with a scrollbar for improved readability. Additional refinements were made to enhance functionality, including features for adding, removing, and modifying waypoints.
+
 ### Biomass - Vegetation Indices using Python
 
 <img src="https://github.com/user-attachments/assets/26bbc689-c241-454d-a444-ff848bf51fd9" alt="Vegetation Indices" style="width: 75%; display: block; margin: 0 auto;">
