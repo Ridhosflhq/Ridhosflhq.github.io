@@ -1,5 +1,5 @@
 ---
-title:  "Advanced examples"
+title:  "Web GIS - Navigation Map"
 mathjax: true
 layout: post
 categories: media
