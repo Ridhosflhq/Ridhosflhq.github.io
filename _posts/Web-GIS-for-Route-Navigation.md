@@ -31,7 +31,7 @@ Once these tools are ready, the next step is to **set up the project structure**
 
 This section explains the key scripts used to build the **Web GIS Route Planner** with **Leaflet.js** and **Leaflet Routing Machine**.  
 
-### **Initializing the Map**  
+### Initializing the Map  
 The map is initialized using **Leaflet.js**, with OpenStreetMap (OSM) as the base layer.  
 
 ```js
