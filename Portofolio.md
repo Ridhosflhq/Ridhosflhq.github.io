@@ -12,7 +12,7 @@ The portfolio includes various outcomes from spatial data processing projects un
 
 For those interested, the PDF version can be downloaded [here.](https://raw.githubusercontent.com/Ridhosflhq/Ridhosflhq.github.io/master/Porto.pdf)
 
-### Interactive Web Map
+### Interactive Web Map 
 
 <img src="https://github.com/user-attachments/assets/2972d23c-f321-4374-8f5c-e778d1806b63" alt="Interactive Web Map" style="width: 75%; display: block; margin: 0 auto;">
 
@@ -24,7 +24,7 @@ This project uses HTML, JavaScript, and the Leaflet library to create an interac
 
 The interactive population map was created using deck.gl through R-Studio. The data used is the 2023 population contour data, which is publicly accessible.
 
-### Interactive Web GIS for Route Navigation
+### [Interactive Web GIS for Route Navigation](https://ridhosflhq.github.io/Web-GIS-for-Route-Navigation/)
 
 <img src="https://github.com/user-attachments/assets/d5644ae2-e76d-4fff-b83e-82d79c089d30" alt="Rute" style="width: 75%; display: block; margin: 0 auto;">
 
