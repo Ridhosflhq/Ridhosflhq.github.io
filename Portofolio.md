@@ -22,7 +22,7 @@ This project uses HTML, JavaScript, and the Leaflet library to create an interac
 
 <img src="https://github.com/user-attachments/assets/b1bf409a-546f-42a7-996c-ad3dd6d39870" alt="Interactive 3d Population Map" style="width: 75%; display: block; margin: 0 auto;">
 
-The interactive population map was created using deck.gl through R-Studio. The data used is the 2023 population contour data, which is publicly accessible.
+The interactive population map was created using deck.gl through R-Studio. The data used is the 2023 population contour data, which is publicly accessible. [Read More](https://ridhosflhq.github.io/2025-02-21-Rstudio.md)
 
 ### Interactive Web GIS for Route Navigation 
 
