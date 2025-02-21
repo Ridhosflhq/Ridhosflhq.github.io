@@ -5,7 +5,7 @@ layout: post
 categories: media
 ---
 
-![Peta_2](https://github.com/user-attachments/assets/d5644ae2-e76d-4fff-b83e-82d79c089d30)
+<img src="https://github.com/user-attachments/assets/d5644ae2-e76d-4fff-b83e-82d79c089d30" alt="Rute" style="width: 75%; display: block; margin: 0 auto;">
 
 
 ## Introduction
