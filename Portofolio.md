@@ -16,7 +16,7 @@ For those interested, the PDF version can be downloaded [here.](https://raw.gith
 
 <img src="https://github.com/user-attachments/assets/2972d23c-f321-4374-8f5c-e778d1806b63" alt="Interactive Web Map" style="width: 75%; display: block; margin: 0 auto;">
 
-This project uses HTML, JavaScript, and the Leaflet library to create an interactive web map. GeoJSON is used to store building data, which is dynamically loaded and visualized. Users can adjust the map center and see buildings color-coded based on distance, with base maps provided by OpenStreetMap, Google, and CartoDB.
+This project uses HTML, JavaScript, and the Leaflet library to create an interactive web map. GeoJSON is used to store building data, which is dynamically loaded and visualized. Users can adjust the map center and see buildings color-coded based on distance, with base maps provided by OpenStreetMap, Google, and CartoDB. [Read More](https://ridhosflhq.github.io/Interactive-building-map)
 
 ### Interactive 3d Population Map
 
