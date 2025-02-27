@@ -54,19 +54,18 @@ When users guess, the system compares input with the correct city and updates th
 function checkAnswer() {
     var userGuess = document.getElementById("guess").value.trim().toLowerCase();
     var correctCity = randomCity.name.toLowerCase();
-
     if (userGuess === correctCity) {
-        document.getElementById("result").innerHTML = "✅ Benar! Ini adalah kota " + randomCity.name;
+        document.getElementById("result").innerHTML = "Benar! Ini adalah kota " + randomCity.name;
         score += 10;
         correctAnswers++;
     } else {
-        document.getElementById("result").innerHTML = "❌ Salah! Ini adalah " + randomCity.name;
+        document.getElementById("result").innerHTML = "Salah! Ini adalah " + randomCity.name;
         score -= 5;
         wrongAnswers++;
     }
     updateStats();
     document.getElementById("nextBtn").style.display = "inline";
-    map.setView([randomCity.lat, randomCity.lon], 13); // Zoom out after answer
+    map.setView([randomCity.lat, randomCity.lon], 13);
 }
 ```
 
