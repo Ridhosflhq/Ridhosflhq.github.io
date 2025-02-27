@@ -34,7 +34,7 @@ The navigation map system was developed using HTML, CSS, and JavaScript with Lea
 
 <img src="https://github.com/user-attachments/assets/0325e647-bd99-48d5-b7f4-3d5f0748315c" alt="Geogssr" style="width: 75%; display: block; margin: 0 auto;">
 
-The "Simple IndoGuessr" project uses HTML, CSS, JavaScript, and Leaflet.js to create a city-guessing game based on satellite images. It features random city selection, scoring, accuracy tracking, and fixed zoom levels, offering an interactive way to explore Indonesian geography. [Read More](https://ridhosflhq.github.io/Web-GIS-for-Route-Navigation/)
+The "Simple IndoGuessr" project uses HTML, CSS, JavaScript, and Leaflet.js to create a city-guessing game based on satellite images. It features random city selection, scoring, accuracy tracking, and fixed zoom levels, offering an interactive way to explore Indonesian geography. [Read More](https://ridhosflhq.github.io/Simple-IndoGuessr/)
 
 ### Biomass - Vegetation Indices using Python
 
