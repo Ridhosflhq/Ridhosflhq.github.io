@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox Isochrone 3D</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; width: 100%; font-family: Arial, sans-serif; }
+        #map { height: 100vh; width: 100vw; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        label { font-size: 14px; font-weight: bold; }
+        input, select, button { padding: 5px; margin: 5px 0; width: 100%; }
+        button { cursor: pointer; }
+        #legend {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <label for="mode">Mode Transportasi:</label>
+        <select id="mode">
+            <option value="walking">Pejalan Kaki</option>
+            <option value="driving">Mobil</option>
+        </select>
+        <br>
+        <label for="time">Waktu (menit):</label>
+        <input type="number" id="time" value="10" step="1" min="1" max="15">
+        <br>
+        <button onclick="getIsochrone()">Hitung Jangkauan</button>
+    </div>
+
+    <div id="map"></div>
+    <div id="legend"></div>
+
+    <script>
+        mapboxgl.accessToken = "pk.eyJ1Ijoia3V0b2E5OTkiLCJhIjoiY2t3NHF2YWZ2MGhxbDJwbGo4bHh3MXZ5ZiJ9.i-NrAAaJgxRmBwz0tySCTA";
+
+        let centerCoordinates = [109.91457323425082, -7.7198907679097655];
+
+        let map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-streets-v12', // Basemap 3D
+            center: centerCoordinates,
+            zoom: 14,
+            pitch: 60, // Sudut kemiringan 3D
+            bearing: -10,
+            antialias: true
+        });
+
+        new mapboxgl.Marker()
+            .setLngLat(centerCoordinates)
+            .addTo(map);
+
+        // Tambahkan Terrain 3D
+        map.on('load', () => {
+            map.addSource('mapbox-dem', {
+                type: 'raster-dem',
+                url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                tileSize: 512,
+                maxzoom: 14
+            });
+
+            map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+        });
+
+        function getIsochrone() {
+            let mode = document.getElementById('mode').value;
+            let travelTime = parseInt(document.getElementById('time').value);
+
+            let url = `https://api.mapbox.com/isochrone/v1/mapbox/${mode}/${centerCoordinates[0]},${centerCoordinates[1]}?contours_minutes=${travelTime},${Math.floor(travelTime * 0.66)},${Math.floor(travelTime * 0.33)}&polygons=true&access_token=${mapboxgl.accessToken}`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Gagal (Status: ${response.status})`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (map.getLayer("isochrone1")) {
+                        map.removeLayer("isochrone1");
+                        map.removeLayer("isochrone2");
+                        map.removeLayer("isochrone3");
+                        map.removeSource("isochrone");
+                    }
+
+                    map.addSource("isochrone", {
+                        type: "geojson",
+                        data: data
+                    });
+
+                    let colors = ["#FF0000", "#FFA500", "#FFFF00"]; // Warna merah, oranye, kuning
+                    let levels = data.features.length;
+
+                    for (let i = 0; i < levels; i++) {
+                        map.addLayer({
+                            id: `isochrone${i + 1}`,
+                            type: "fill",
+                            source: "isochrone",
+                            layout: {},
+                            paint: {
+                                "fill-color": colors[i],
+                                "fill-opacity": 0.4
+                            },
+                            filter: ["==", "contour", data.features[i].properties.contour]
+                        });
+                    }
+
+                    updateLegend(data.features, colors);
+                })
+                .catch(error => {
+                    console.error("Error Fetch:", error);
+                    alert(`Terjadi kesalahan: ${error.message}`);
+                });
+        }
+
+        function updateLegend(features, colors) {
+            let legend = document.getElementById("legend");
+            legend.innerHTML = "";
+            legend.style.display = "block";
+
+            let sortedFeatures = features.sort((a, b) => b.properties.contour - a.properties.contour);
+
+            sortedFeatures.forEach((feature, index) => {
+                let distanceMeters = feature.properties.contour * (document.getElementById('mode').value === "walking" ? 80 : 250);
+                let item = document.createElement("div");
+                item.className = "legend-item";
+                item.innerHTML = `
+                    <div class="legend-color" style="background-color: ${colors[index]};"></div>
+                    <span>${distanceMeters.toFixed(0)} meter</span>
+                `;
+                legend.appendChild(item);
+            });
+        }
+    </script>
+
+</body>
+</html>
