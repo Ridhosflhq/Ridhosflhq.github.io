@@ -36,6 +36,12 @@ The navigation map system was developed using HTML, CSS, and JavaScript with Lea
 
 The "Simple IndoGuessr" project uses HTML, CSS, JavaScript, and Leaflet.js to create a city-guessing game based on satellite images. It features random city selection, scoring, accuracy tracking, and fixed zoom levels, offering an interactive way to explore Indonesian geography. [Read More](https://ridhosflhq.github.io/Simple-IndoGuessr/)
 
+### Isochrone WebGIS: Travel Distance Visualized
+
+<img src="https://github.com/user-attachments/assets/374d74e1-3f23-4123-ad68-1d9224a4f9db" alt="Isochrone" style="width: 75%; display: block; margin: 0 auto;">
+
+This WebGIS visualizes travel reach using the Mapbox Isochrone API. Users select a transport mode and time, generating dynamic travel zones on a Leaflet map. Built with HTML, CSS, and JavaScript, it supports mobility analysis, accessibility studies, and travel planning.
+
 ### Biomass - Vegetation Indices using Python
 
 <img src="https://github.com/user-attachments/assets/26bbc689-c241-454d-a444-ff848bf51fd9" alt="Vegetation Indices" style="width: 75%; display: block; margin: 0 auto;">
