@@ -24,67 +24,68 @@ Designed for efficiency and flexibility, this project is built using:
 * **[HTML, CSS, JavaScript](https://developer.mozilla.org/en-US/docs/Web/)** – Powers the frontend for seamless user experience.  
 * **[GeoJSON](https://geojson.org/)** – Stores and processes isochrone polygon data dynamically.  
 
-## Building Map
-This project creates an interactive GeoGuessr-style map using **Leaflet.js**, where users guess cities based on satellite imagery. The script ensures a random city appears each round and tracks scores.
+## Building the Map  
 
+Bringing the WebGIS to life starts with a simple map, a marker, and an API call. Follow these steps to create an interactive travel reach visualization.  
 
-This query efficiently fetches all buildings within Kutoarjo and prepares them for visualization.
+### 1. Initialize the Map  
 
-### Initialize Map
-The map is initialized with a random city at zoom level 15, ensuring a static view:
+Everything begins with a map. Centered at [Alun-Alun Kutoarjo]([https://geojson.org/](https://maps.app.goo.gl/Qnty4y8dqhD3WZej8)), this Leaflet-powered map lays the foundation.  
+
 ```js
-function initMap() {
-    randomCity = getNextCity();
-    actualLat = randomCity.lat + getRandomOffset();
-    actualLon = randomCity.lon + getRandomOffset();
-    if (map) {
-        map.setView([actualLat, actualLon], 15);
-    } else {
-        map = L.map('map', { zoomControl: false, dragging: false, scrollWheelZoom: false })
-            .setView([actualLat, actualLon], 15);
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '&copy; Esri'
-        }).addTo(map);
-    }
+var map = L.map('map').setView([-7.719891, 109.914573], 14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+```
+A clean, interactive canvas—ready for exploration.
+
+### 2. Add a Marker for the Starting Point
+A journey needs a starting point. The marker stands firm at the heart of Kutoarjo, waiting for user input.
+```js
+var marker = L.marker([-7.719891, 109.914573]).addTo(map);
+```
+No dragging, no shifting—this is the reference for all calculations. [Here why](https://docs.mapbox.com/api/navigation/isochrone/#isochrone-api-restrictions-and-limits)
+
+### 3. Fetch Isochrone Data from Mapbox API
+Now, the real magic happens. With a single request, Mapbox returns a polygon showing just how far one can travel in a given time.
+```js
+async function getIsochrone(mode, minutes) {
+    let url = `https://api.mapbox.com/isochrone/v1/mapbox/${mode}/109.914573,-7.719891?contours_minutes=${minutes}&access_token=YOUR_MAPBOX_ACCESS_TOKEN`;
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
 }
 ```
+With this, distance transforms into data—structured, dynamic, and ready for visualization.
 
-### Answer Check & Score Update
-When users guess, the system compares input with the correct city and updates the score accordingly.
+### 4. Display the Isochrone on the Map
+A raw dataset is useful, but a visual representation makes it powerful. Here, the isochrone polygon takes shape, overlaying the map with smooth color-coded zones.
 ```js
-function checkAnswer() {
-    var userGuess = document.getElementById("guess").value.trim().toLowerCase();
-    var correctCity = randomCity.name.toLowerCase();
-    if (userGuess === correctCity) {
-        document.getElementById("result").innerHTML = "Benar! Ini adalah kota " + randomCity.name;
-        score += 10;
-        correctAnswers++;
-    } else {
-        document.getElementById("result").innerHTML = "Salah! Ini adalah " + randomCity.name;
-        score -= 5;
-        wrongAnswers++;
-    }
-    updateStats();
-    document.getElementById("nextBtn").style.display = "inline";
-    map.setView([randomCity.lat, randomCity.lon], 13);
+function displayIsochrone(geojsonData) {
+    L.geoJSON(geojsonData, {
+        style: function () {
+            return { color: "#007bff", weight: 2, fillOpacity: 0.4 };
+        }
+    }).addTo(map);
 }
 ```
+Just like that, travel reach appears—clear, structured, and interactive.
 
-### Next Round (New City)
-The game selects a new random city, ensuring it's not the same as the previous round:
+### 5. Handle User Selection
+Walking or driving? 5 minutes or 30? The user decides, and the map responds instantly.
 ```js
-function nextRound() {
-    document.getElementById("result").innerHTML = "";
-    document.getElementById("guess").value = "";
-    document.getElementById("nextBtn").style.display = "none";
-    initMap(); // Selects new city
-}
+document.getElementById("generate").addEventListener("click", async function() {
+    let mode = document.getElementById("mode").value;
+    let minutes = document.getElementById("time").value;
+    let isochroneData = await getIsochrone(mode, minutes);
+    displayIsochrone(isochroneData);
+});
 ```
+A single click—and the world shifts. The isochrone updates, dynamically reflecting new choices.
 
 ## Summary
-**Simple IndoGuessr** is a lightweight Web GIS game built with **HTML, JavaScript, and Leaflet.js**. Players guess Indonesian cities based on satellite imagery, with randomized locations ensuring variation. The game features **score tracking, accuracy percentage, and non-repetitive city selection**, dynamically adjusting the map zoom after each round for an engaging experience. 
+This WebGIS project visualizes travel reachability using **Mapbox Isochrone API** and **Leaflet.js**. Centered at **Alun-Alun Kutoarjo**, users can select **walking or driving modes** and adjust travel time to see how far they can go. The map dynamically updates with an **isochrone polygon**, showing reachable areas in real-time. Built with **HTML, CSS, JavaScript, and Flask**, the project ensures an interactive and responsive experience. Designed for accessibility analysis, it helps users understand **distance in time** with a clear, visual approach.
 
 ### **Try the Live Building Map:**  
-**[Live Demo](https://ridhosflhq.github.io/Peta_3/)**  
+**[Live Demo](https://ridhosflhq.github.io/Peta_4/)**  
 
 Happy mapping! 🗺️ 
