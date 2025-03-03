@@ -40,7 +40,7 @@ The "Simple IndoGuessr" project uses HTML, CSS, JavaScript, and Leaflet.js to cr
 
 <img src="https://github.com/user-attachments/assets/374d74e1-3f23-4123-ad68-1d9224a4f9db" alt="Isochrone" style="width: 75%; display: block; margin: 0 auto;">
 
-This WebGIS visualizes travel reach using the Mapbox Isochrone API. Users select a transport mode and time, generating dynamic travel zones on a Leaflet map. Built with HTML, CSS, and JavaScript, it supports mobility analysis, accessibility studies, and travel planning.
+This WebGIS visualizes travel reach using the Mapbox Isochrone API. Users select a transport mode and time, generating dynamic travel zones on a Leaflet map. Built with HTML, CSS, and JavaScript, it supports mobility analysis, accessibility studies, and travel planning. [Read More](https://ridhosflhq.github.io/Isochrone/)
 
 ### Biomass - Vegetation Indices using Python
 
