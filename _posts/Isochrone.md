@@ -30,7 +30,7 @@ Bringing the WebGIS to life starts with a simple map, a marker, and an API call.
 
 ### 1. Initialize the Map  
 
-Everything begins with a map. Centered at [Alun-Alun Kutoarjo]([https://geojson.org/](https://maps.app.goo.gl/Qnty4y8dqhD3WZej8)), this Leaflet-powered map lays the foundation.  
+Everything begins with a map. Centered at [Alun-Alun Kutoarjo](https://maps.app.goo.gl/Qnty4y8dqhD3WZej8), this Leaflet-powered map lays the foundation.  
 
 ```js
 var map = L.map('map').setView([-7.719891, 109.914573], 14);
