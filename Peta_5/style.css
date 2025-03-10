@@ -1,0 +1,54 @@
+/* Tampilan dasar halaman */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Layout utama */
+#container {
+    display: flex;
+    height: 100%;
+}
+
+/* Peta di sebelah kiri */
+#map {
+    flex: 1;
+    height: 100%;
+}
+
+/* Sidebar tetap di kanan */
+#sidebar {
+    width: 320px;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-left: 2px solid #ccc;
+}
+
+/* Header */
+h2, h3 {
+    margin-top: 0;
+}
+
+/* Daftar dan detail */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+li:hover {
+    background-color: #e0e0e0;
+}
+
+/* Bagian statistik */
+.stats-section {
+    margin-bottom: 15px;
+}
