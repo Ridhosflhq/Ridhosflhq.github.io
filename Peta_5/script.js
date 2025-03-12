@@ -1,5 +1,5 @@
-// ✅ Tambahkan basemap Esri
-const map = L.map('map').setView([-6.2, 106.8], 14);
+// Tambahkan basemap Esri
+const map = L.map('map').setView([-6.220483917275577, 106.60468594322326], 18);
 
 const streetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
@@ -11,7 +11,6 @@ const satelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/se
     maxZoom: 19
 });
 
-// ✅ Tambahkan kontrol layer untuk memilih basemap
 const baseMaps = {
     "Peta Jalan": streetMap,
     "Peta Satelit": satelliteMap
@@ -19,10 +18,20 @@ const baseMaps = {
 
 L.control.layers(baseMaps).addTo(map);
 
+L.control.browserPrint({
+    title: 'Cetak Peta',
+    documentTitle: 'Peta Bangunan',
+    printModes: [
+        L.BrowserPrint.Mode.Landscape("Landscape", "A4"),
+        L.BrowserPrint.Mode.Custom("Custom", "A4")
+    ],
+    manualMode: false
+}).addTo(map);
+
 let geojsonLayer;
 let highlightLayer = L.geoJSON(null, {
     style: {
-        color: '#ff0000', // Garis merah untuk highlight klasifikasi
+        color: '#ff0000',
         weight: 2,
         fillOpacity: 0
     }
@@ -30,21 +39,45 @@ let highlightLayer = L.geoJSON(null, {
 
 let selectedFeatures = [];
 let totalBuildings = 0;
+let bufferLayer = L.layerGroup().addTo(map);
+let drawnItems = new L.FeatureGroup().addTo(map);
+let lastDrawnShape = null; // Menyimpan bentuk terakhir
 
-// ✅ Ambil data GeoJSON
+// Layer untuk highlight merah
+let redHighlightLayer = L.geoJSON(null, {
+    style: {
+        color: '#ff0000',
+        weight: 3,
+        fillOpacity: 0.2
+    }
+}).addTo(map);
+
+//  Ambil data GeoJSON
 fetch('bangunan.geojson')
     .then(response => response.json())
     .then(data => {
         totalBuildings = data.features.length;
         document.getElementById('totalBuildings').textContent = totalBuildings;
 
-        // Tambahkan layer utama
         geojsonLayer = L.geoJSON(data, {
             style: {
-                color: '#000', // Garis hitam untuk tampilan awal
+                color: '#000',
                 weight: 1,
                 fillColor: '#cccccc',
                 fillOpacity: 0.5
+            },
+            onEachFeature: (feature, layer) => {
+                layer.on('mouseover', () => {
+                    const properties = feature.properties;
+                    let popupContent = `<b>Nama:</b> ${properties.TOPONIM || 'Tidak Ada'}<br>`;
+                    popupContent += `<b>Tipe:</b> ${properties.JENIS || 'Tidak Ada'}<br>`;
+                    popupContent += `<b>Jenis Bangunan:</b> ${properties.JENISBANGU || 'Tidak Ada'}`;
+                    layer.bindPopup(popupContent).openPopup();
+                });
+
+                layer.on('mouseout', () => {
+                    layer.closePopup();
+                });
             }
         }).addTo(map);
     });
@@ -66,46 +99,37 @@ function updateSidebar() {
     for (const [jenis, features] of Object.entries(jenisCounts)) {
         const li = document.createElement('li');
         li.innerHTML = `${jenis}: ${features.length}`;
-
-        // ✅ Klik untuk highlight dan zoom semua bangunan pada klasifikasi
         li.addEventListener('click', () => {
             highlightLayer.clearLayers();
+            detailList.innerHTML = '';
 
             features.forEach(f => {
                 L.geoJSON(f, {
                     style: {
-                        color: '#ff0000', // Garis merah untuk highlight
+                        color: '#000',
                         weight: 2,
-                        fillOpacity: 0.1
+                        fillOpacity: 0.5
                     }
                 }).addTo(highlightLayer);
-            });
 
-            const bounds = L.latLngBounds(features.map(f => {
-                const layer = L.geoJSON(f);
-                return layer.getBounds();
-            }));
-            map.fitBounds(bounds);
-
-            detailList.innerHTML = '';
-            features.forEach(f => {
                 const detailItem = document.createElement('li');
-                detailItem.textContent = f.properties.TOPONIM || 'Tidak Diketahui';
+                detailItem.innerHTML = `
+                    <b>Nama:</b> ${f.properties.TOPONIM || 'Tidak Ada'}<br>
+                    <b>Tipe:</b> ${f.properties.JENIS || 'Tidak Ada'}<br>
+                    <b>Jenis Bangunan:</b> ${f.properties.JENISBANGU || 'Tidak Ada'}
+                `;
 
-                // ✅ Klik untuk highlight spesifik toponim
                 detailItem.addEventListener('click', () => {
-                    highlightLayer.clearLayers();
-
-                    const layer = L.geoJSON(f, {
+                    redHighlightLayer.clearLayers();
+                    const redHighlight = L.geoJSON(f, {
                         style: {
-                            color: '#ff0000', // Warna merah untuk highlight
-                            weight: 2,
-                            fillColor: '#ffff00', // Warna kuning untuk isian
-                            fillOpacity: 0.6
+                            color: '#ff0000',
+                            weight: 3,
+                            fillOpacity: 0.2
                         }
-                    }).addTo(highlightLayer);
+                    }).addTo(redHighlightLayer);
 
-                    map.fitBounds(layer.getBounds());
+                    map.fitBounds(redHighlight.getBounds());
                 });
 
                 detailList.appendChild(detailItem);
@@ -115,45 +139,124 @@ function updateSidebar() {
         classificationList.appendChild(li);
     }
 
-    // ✅ Perbarui statistik umum
     document.getElementById('selectedCount').textContent = selectedFeatures.length;
     document.getElementById('selectedPercentage').textContent = `${((selectedFeatures.length / totalBuildings) * 100).toFixed(2)}%`;
 }
 
-// ✅ Seleksi dengan Leaflet Draw
-const drawnItems = new L.FeatureGroup().addTo(map);
-
+//  Aktifkan fitur seleksi garis + objek lainnya
 const drawControl = new L.Control.Draw({
     draw: {
-        polyline: false,
-        marker: false,
+        polyline: false, 
+        polygon: true,
+        rectangle: true,
         circle: false,
-        circlemarker: false,
-        rectangle: true, // ❌ Hapus seleksi kotak
-        polygon: true // ✅ Tetap gunakan seleksi bentuk bebas
+        marker: true,
+        circlemarker: false
     },
     edit: {
-        featureGroup: drawnItems
+        featureGroup: drawnItems,
+        remove: true // 
     }
 });
 
 map.addControl(drawControl);
 
 map.on(L.Draw.Event.CREATED, (e) => {
-    drawnItems.clearLayers();
-    drawnItems.addLayer(e.layer);
+    const layer = e.layer;
 
-    selectedFeatures = [];
+    //  Hapus hasil seleksi sebelumnya
+    if (lastDrawnShape) {
+        drawnItems.removeLayer(lastDrawnShape);
+    }
+    lastDrawnShape = layer;
+    drawnItems.addLayer(layer);
+
+    const geoJSON = layer.toGeoJSON();
+
+    //  Seleksi fitur menggunakan Turf.js
+    const selectedBuildings = [];
     geojsonLayer.eachLayer(layer => {
-        if (e.layer.getBounds().intersects(layer.getBounds())) {
-            selectedFeatures.push(layer.feature);
+        if (turf.intersect(geoJSON, layer.feature)) {
+            selectedBuildings.push(layer.feature);
         }
     });
 
+    selectedFeatures = selectedBuildings;
     updateSidebar();
 });
 
-// ✅ Reset highlight saat peta diklik
+//  Perbaiki penghapusan seleksi
+map.on(L.Draw.Event.DELETED, () => {
+    selectedFeatures = [];
+    highlightLayer.clearLayers();
+    redHighlightLayer.clearLayers();
+    bufferLayer.clearLayers();
+    updateSidebar(); // Reset sidebar
+});
+
+//  Buffer dari hasil gambar
+document.getElementById('applyBuffer').addEventListener('click', () => {
+    if (!lastDrawnShape) {
+        alert("Silakan gambar area terlebih dahulu sebelum membuat buffer.");
+        return;
+    }
+
+    const bufferDistance = parseFloat(document.getElementById('bufferDistance').value);
+    if (isNaN(bufferDistance) || bufferDistance < 0) {
+        alert('Masukkan jarak buffer yang valid!');
+        return;
+    }
+
+    bufferLayer.clearLayers();
+
+    const geoJSON = lastDrawnShape.toGeoJSON();
+    const buffered = turf.buffer(geoJSON, bufferDistance / 1000, { units: 'kilometers' });
+
+    L.geoJSON(buffered, {
+        style: {
+            color: '#00ff00',
+            weight: 2,
+            fillOpacity: 0.2
+        }
+    }).addTo(bufferLayer);
+});
+
+//  Hapus buffer
+document.getElementById('clearBuffer').addEventListener('click', () => {
+    bufferLayer.clearLayers(); // Hapus layer buffer dari peta
+    selectedFeatures = []; // Hapus hasil seleksi buffer
+    updateSidebar();
+});
+
+//  Fungsi untuk mencetak konten yang dipilih
+function generateSelectedContentHTML() {
+    let html = `
+        <h2>Daftar Bangunan Terpilih</h2>
+        <ul>
+    `;
+
+    selectedFeatures.forEach((feature, index) => {
+        html += `
+            <li>
+                ${index + 1}. ${feature.properties.TOPONIM || 'Tidak Ada'} - 
+                ${feature.properties.JENIS || 'Tidak Ada'}
+            </li>
+        `;
+    });
+
+    html += `</ul>`;
+    return html;
+}
+
+document.getElementById('printSelectedContent').addEventListener('click', () => {
+    const content = generateSelectedContentHTML();
+    printJS({
+        printable: content,
+        type: 'raw-html'
+    });
+});
+
+//  Bersihkan highlight saat klik di peta
 map.on('click', () => {
     highlightLayer.clearLayers();
 });
