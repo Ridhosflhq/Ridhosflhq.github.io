@@ -1,38 +1,55 @@
-/* Tampilan dasar halaman */
+/* Tampilan Utama */
 body, html {
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
 }
 
-/* Layout utama */
+/* Peta Full Screen */
 #container {
     display: flex;
-    height: 100%;
+    height: 100vh;
+    width: 100vw;
 }
 
-/* Peta di sebelah kiri */
 #map {
     flex: 1;
     height: 100%;
+    width: 100%;
 }
 
-/* Sidebar tetap di kanan */
+/* Sidebar di Atas Peta */
 #sidebar {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     width: 320px;
-    height: 100%;
-    overflow-y: auto;
-    background-color: #f7f7f7;
-    padding: 10px;
-    border-left: 2px solid #ccc;
+    height: 93vh;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 999;
 }
 
-/* Header */
-h2, h3 {
-    margin-top: 0;
+/* Elemen Statis (Judul, Statistik, Buffer, Tombol Cetak) */
+.fixed-section {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 1000;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
 }
 
-/* Daftar dan detail */
+/* Statistik */
+.stats-section p {
+    margin: 5px 0;
+}
+
+/* Klasifikasi dan Detail */
 ul {
     list-style-type: none;
     padding: 0;
@@ -42,13 +59,113 @@ li {
     padding: 8px;
     cursor: pointer;
     border-bottom: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 li:hover {
     background-color: #e0e0e0;
 }
 
-/* Bagian statistik */
-.stats-section {
-    margin-bottom: 15px;
+/* Detail Bangunan */
+#detailList li {
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Elemen Scroll (Klasifikasi dan Detail) */
+.scrollable-section {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+/* Kontrol Buffer */
+.buffer-control {
+    margin-top: 20px;
+}
+
+.buffer-control label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.buffer-control input {
+    width: calc(100% - 20px);
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+/* Tombol Bersebelahan (Horizontal) */
+.button-row {
+    display: flex;
+    gap: 10px;
+}
+
+.button-row button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.button-row button:hover {
+    background-color: #45a049;
+}
+
+/* Tombol Hapus Buffer */
+.delete-button {
+    background-color: #f44336;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Tombol Cetak */
+.print-selected-control {
+    margin-top: 10px;
+}
+
+.print-selected-control button {
+    width: 100%;
+    padding: 10px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.print-selected-control button:hover {
+    background-color: #007B9E;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    #sidebar {
+        width: calc(100% - 20px);
+        height: auto;
+        top: 10px;
+        right: 10px;
+    }
+
+    #map {
+        height: calc(100vh - 50px);
+    }
+
+    .button-row {
+        flex-direction: row;
+    }
+
+    .button-row button {
+        font-size: 12px;
+        padding: 8px;
+    }
 }
