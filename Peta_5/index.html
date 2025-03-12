@@ -5,41 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web GIS Bangunan</title>
     <link rel="stylesheet" href="style.css" />
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
-    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <!-- Tambahkan Turf.js -->
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <!-- Tambahkan Print.js -->
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 </head>
 <body>
     <div id="container">
         <div id="map"></div>
         <div id="sidebar">
-            <!-- Judul -->
-            <h2>Statistik Bangunan</h2>
+            <!-- Elemen Statis -->
+            <div class="fixed-section">
+                <!-- Judul -->
+                <h2>Statistik Bangunan</h2>
 
-            <!-- Statistik umum -->
-            <div class="stats-section">
-                <p><b>Total Bangunan:</b> <span id="totalBuildings">0</span></p>
-                <p><b>Bangunan Terpilih:</b> <span id="selectedCount">0</span></p>
-                <p><b>Persentase:</b> <span id="selectedPercentage">0%</span></p>
+                <!-- Statistik umum -->
+                <div class="stats-section">
+                    <p><b>Total Bangunan:</b> <span id="totalBuildings">0</span></p>
+                    <p><b>Bangunan Terpilih:</b> <span id="selectedCount">0</span></p>
+                    <p><b>Persentase:</b> <span id="selectedPercentage">0%</span></p>
+                </div>
+
+                <!-- Kontrol Buffer -->
+                <div class="buffer-control">
+                    <label for="bufferDistance">Jarak Buffer (meter):</label>
+                    <input type="number" id="bufferDistance" value="100" min="0" />
+                    <div class="button-row">
+                        <button id="applyBuffer">Terapkan Buffer</button>
+                        <button id="clearBuffer" class="delete-button">Hapus Buffer</button>
+                    </div>
+                </div>
+
+                <!-- Tombol Cetak -->
+                <div class="print-selected-control">
+                    <button id="printSelectedContent">Cetak Konten Terpilih</button>
+                </div>
             </div>
 
-            <!-- Klasifikasi Bangunan -->
+            <!-- Elemen Scroll -->
             <h3>Klasifikasi Bangunan Terpilih</h3>
-            <ul id="classificationList"></ul>
+            <div class="scrollable-section">
+                <ul id="classificationList"></ul>
 
-            <!-- Detail Bangunan -->
-            <h3>Detail Bangunan</h3>
-            <ul id="detailList"></ul>
+                <!-- Detail Bangunan -->
+                <h3>Detail Bangunan</h3>
+                <ul id="detailList"></ul>
+            </div>
         </div>
     </div>
 
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.js"></script>
+
+    <!-- File JS -->
     <script src="script.js"></script>
 </body>
 </html>
