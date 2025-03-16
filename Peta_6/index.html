@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peta Dot Populasi Kota Magelang</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <title>Peta Sebaran Kepadatan Penduduk</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <style>
     #map {
       height: 100vh;
@@ -13,9 +16,54 @@
   </style>
 </head>
 <body>
-  <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="script.js"></script>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  // Inisialisasi Peta
+  const map = L.map('map').setView([-7.4861, 110.2227], 14);
+
+  // Tambahkan Tile Layer (Basemap)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // URL GeoJSON dari Dropbox (ubah jadi direct link)
+  const geojsonUrl = 'https://dl.dropboxusercontent.com/scl/fi/sh8sn8rvau04oqx2ua0gg/Kepadatan.geojson?rlkey=cp6kcrd1kj71y14g4x181osb5&e=1&st=2kep3cgh';
+
+  // Fetch GeoJSON
+  fetch(geojsonUrl)
+    .then(response => response.json())
+    .then(data => {
+      // Tambahkan GeoJSON ke Peta
+      const geojsonLayer = L.geoJSON(data, {
+        pointToLayer: (feature, latlng) => {
+          return L.circleMarker(latlng, {
+            radius: 6,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+          });
+        },
+        onEachFeature: (feature, layer) => {
+          if (feature.properties) {
+            layer.bindPopup(`
+              <b>Kelurahan:</b> ${feature.properties.kelurahan}<br>
+              <b>Jumlah:</b> ${feature.properties.Jumlah}<br>
+              <b>Shape Area:</b> ${feature.properties.Shape_Area.toFixed(2)} m²
+            `);
+          }
+        }
+      }).addTo(map);
+
+      // Zoom ke data GeoJSON
+      map.fitBounds(geojsonLayer.getBounds());
+    })
+    .catch(error => console.error('Error loading GeoJSON:', error));
+</script>
+
 </body>
 </html>
